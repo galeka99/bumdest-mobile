@@ -21,6 +21,9 @@ class ErrorParser {
       case 'WRONG_PASSWORD':
         str = 'Wrong password';
         break;
+      case 'INVALID_ACCESS_TOKEN':
+        str = 'Access token is invalid, please login to continue';
+        break;
       default:
         str = 'Error while fetching data';
     }

@@ -19,6 +19,11 @@ dependencies:
   flutter_svg: ^1.1.1+1
   cached_network_image: ^3.2.1
   ionicons: ^0.1.2
+  google_nav_bar: ^5.0.6
+  infinite_scroll_pagination: ^3.2.0
+  carousel_slider: ^4.1.1
+  bottom_sheet: ^3.1.1
+  easy_pdf_viewer: ^1.0.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.3

@@ -83,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
+    
     setState(() {
       _loading = true;
     });
@@ -237,6 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   validator: (str) {
                     if (str!.isEmpty) return 'Password cannot be empty';
+                    if (str.length < 8) return 'Password at least 8 character';
                     return null;
                   },
                 ),
