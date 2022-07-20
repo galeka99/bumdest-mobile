@@ -6,6 +6,8 @@ class UserModel {
   final String email;
   final String phone;
   final int balance;
+  final int totalInvest;
+  final int totalIncome;
   final String address;
   final String postalCode;
   final LocationModel location;
@@ -20,6 +22,8 @@ class UserModel {
     required this.email,
     required this.phone,
     required this.balance,
+    required this.totalInvest,
+    required this.totalIncome,
     required this.address,
     required this.postalCode,
     required this.location,
@@ -36,6 +40,8 @@ class UserModel {
       email: json['email'],
       phone: json['phone'],
       balance: json['balance'],
+      totalInvest: json['total_invest'] ?? 0,
+      totalIncome: json['total_income'] ?? 0,
       address: json['address'],
       postalCode: json['postal_code'],
       location: LocationModel.parse(json['location']),

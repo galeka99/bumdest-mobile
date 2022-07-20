@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         auth: false,
         data: {
           'email': _email.text.trim(),
-          'password': _password.text.trim(), 
+          'password': _password.text.trim(),
         },
       );
 
@@ -85,6 +85,26 @@ class _LoginPageState extends State<LoginPage> {
               'assets/images/bumdest.svg',
               color: Colors.blue,
               width: MediaQuery.of(context).size.width * .35,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Bumdest'.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800,
+              ),
+            ),
+            SizedBox(height: 3),
+            Text(
+              'Let\'s improve and empower our village'.toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade400,
+              ),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * .075,
@@ -145,7 +165,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (str) {
                       if (str!.isEmpty) return 'Password cannot be empty';
-                      if (str.length < 8) return 'Password at least 8 character';
+                      if (str.length < 8)
+                        return 'Password at least 8 character';
                       return null;
                     },
                   ),
