@@ -6,6 +6,7 @@ import 'package:bumdest/models/bumdes_investor.dart';
 import 'package:bumdest/models/product.dart';
 import 'package:bumdest/services/api.dart';
 import 'package:bumdest/services/helper.dart';
+import 'package:bumdest/views/bumdes/bumdes_reviews.dart';
 import 'package:bumdest/views/bumdes/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -801,6 +802,13 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                OutlinedButton(
+                  onPressed: () => Nav.push(BumdesReviewPage(_bumdes.id)),
+                  child: Text(
+                    'Show Reviews'.toUpperCase(),
                   ),
                 ),
                 SizedBox(height: 10),
