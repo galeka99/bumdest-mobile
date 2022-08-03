@@ -1,5 +1,6 @@
 import 'package:bumdest/services/store.dart';
 import 'package:bumdest/views/common/login.dart';
+import 'package:bumdest/views/profile/update_profile.dart';
 import 'package:bumdest/views/topup/history.dart';
 import 'package:bumdest/views/withdraw/history.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
       'type': 1,
       'title': 'Update Profile',
       'icon': Ionicons.create_outline,
-      'function': () {},
+      'function': () => Nav.push(UpdateProfilePage()),
     },
     {
       'type': 1,
