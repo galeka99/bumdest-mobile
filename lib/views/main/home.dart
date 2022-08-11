@@ -65,10 +65,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _getRecommendProducts() async {
     try {
-      dynamic data = await Api.get('/v1/product/random?limit=5');
+      dynamic data = await Api.get('/v1/product/recommended');
       setState(() {
         _products =
-            (data['data'] as List).map((e) => ProductModel.parse(e)).toList();
+            (data as List).map((e) => ProductModel.parse(e)).toList();
       });
     } catch (e) {
       if (e is ApiError) {

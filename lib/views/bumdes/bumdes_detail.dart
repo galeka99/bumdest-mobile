@@ -24,7 +24,9 @@ class BumdesDetailPage extends StatefulWidget {
 class _BumdesDetailPageState extends State<BumdesDetailPage> {
   late BumdesModel _bumdes;
   bool _loading = true;
-  List<ProductModel> _products = [];
+  List<ProductModel> _bestProducts = [];
+  List<ProductModel> _relatedProducts = [];
+  List<ProductModel> _latestProducts = [];
   List<BumdesInvestorModel> _investors = [];
 
   Future<void> _getData() async {
@@ -45,12 +47,47 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
     }
   }
 
-  Future<void> _getProducts() async {
+  Future<void> _getBestProducts() async {
     try {
       dynamic data =
           await Api.get('/v1/bumdes/${widget.bumdesId}/products?limit=5');
       setState(() {
-        _products =
+        _bestProducts =
+            (data['data'] as List).map((e) => ProductModel.parse(e)).toList();
+      });
+    } catch (e) {
+      if (e is ApiError) {
+        Helper.toast(context, e.message, isError: true);
+      } else {
+        print(e);
+        Helper.toast(context, 'System error', isError: true);
+      }
+    }
+  }
+
+  Future<void> _getRelatedProducts() async {
+    try {
+      dynamic data =
+          await Api.get('/v1/bumdes/${widget.bumdesId}/recommended_products');
+      setState(() {
+        _relatedProducts =
+            (data as List).map((e) => ProductModel.parse(e)).toList();
+      });
+    } catch (e) {
+      if (e is ApiError) {
+        Helper.toast(context, e.message, isError: true);
+      } else {
+        print(e);
+        Helper.toast(context, 'System error', isError: true);
+      }
+    }
+  }
+  Future<void> _getLatestProducts() async {
+    try {
+      dynamic data =
+          await Api.get('/v1/bumdes/${widget.bumdesId}/products?limit=5');
+      setState(() {
+        _latestProducts =
             (data['data'] as List).map((e) => ProductModel.parse(e)).toList();
       });
     } catch (e) {
@@ -136,10 +173,10 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
         ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: _products.length,
+          itemCount: _bestProducts.length,
           separatorBuilder: (_, __) => SizedBox(height: 10),
           itemBuilder: (_, i) {
-            ProductModel item = _products[i];
+            ProductModel item = _bestProducts[i];
 
             return InkWell(
               onTap: () => Nav.push(ProductDetailPage(item.id, item.title)),
@@ -282,10 +319,10 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
         ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: _products.length,
+          itemCount: _latestProducts.length,
           separatorBuilder: (_, __) => SizedBox(height: 10),
           itemBuilder: (_, i) {
-            ProductModel item = _products[i];
+            ProductModel item = _latestProducts[i];
 
             return InkWell(
               onTap: () => Nav.push(ProductDetailPage(item.id, item.title)),
@@ -428,10 +465,10 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
         ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: _products.length,
+          itemCount: _relatedProducts.length,
           separatorBuilder: (_, __) => SizedBox(height: 10),
           itemBuilder: (_, i) {
-            ProductModel item = _products[i];
+            ProductModel item = _relatedProducts[i];
 
             return InkWell(
               onTap: () => Nav.push(ProductDetailPage(item.id, item.title)),
@@ -650,7 +687,9 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
   @override
   void initState() {
     _getData();
-    _getProducts();
+    _getBestProducts();
+    _getRelatedProducts();
+    _getLatestProducts();
     _getTopTenInvestors();
     super.initState();
   }
