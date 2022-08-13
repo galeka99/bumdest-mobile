@@ -63,7 +63,6 @@ class _ExplorePageState extends State<ExplorePage> {
       appBar: CustomAppBar(context, 'Explore Product'),
       body: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).padding.top),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: TextField(

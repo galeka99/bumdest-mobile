@@ -82,6 +82,7 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
       }
     }
   }
+
   Future<void> _getLatestProducts() async {
     try {
       dynamic data =
@@ -290,13 +291,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
               ),
             );
           },
-        ),
-        SizedBox(height: 10),
-        OutlinedButton(
-          onPressed: () {},
-          child: Text(
-            'View More Products'.toUpperCase(),
-          ),
         ),
       ],
     );
@@ -583,13 +577,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
             );
           },
         ),
-        SizedBox(height: 10),
-        OutlinedButton(
-          onPressed: () {},
-          child: Text(
-            'View More Products'.toUpperCase(),
-          ),
-        ),
       ],
     );
   }
@@ -620,65 +607,79 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
             ),
           ),
           Divider(),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            // padding: EdgeInsets.symmetric(horizontal: 15),
-            itemCount: _investors.length,
-            separatorBuilder: (_, __) => Divider(),
-            itemBuilder: (_, i) {
-              BumdesInvestorModel item = _investors[i];
-
-              return ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                leading: CircleAvatar(
-                  backgroundColor:
-                      Theme.of(context).primaryColor.withOpacity(.25),
-                  child: Text(
-                    (i + 1).toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
-                  ),
-                ),
-                title: Text(
-                  item.userName,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Row(
-                  children: [
-                    Icon(
-                      Ionicons.location_outline,
-                      size: 12,
-                      color: Colors.grey.shade600,
-                    ),
-                    SizedBox(width: 3),
-                    Text(
-                      '${item.userCity}, ${item.userProvince}',
+          _investors.length == 0
+              ? Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10).copyWith(top: 0),
+                  child: Center(
+                    child: Text(
+                      'No Investor yet'.toUpperCase(),
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade600,
                       ),
                     ),
-                  ],
-                ),
-                trailing: Text(
-                  Helper.compactNumber(item.investAmount),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green.shade600,
                   ),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _investors.length,
+                  separatorBuilder: (_, __) => Divider(),
+                  itemBuilder: (_, i) {
+                    BumdesInvestorModel item = _investors[i];
+
+                    return ListTile(
+                      dense: true,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                      leading: CircleAvatar(
+                        backgroundColor:
+                            Theme.of(context).primaryColor.withOpacity(.25),
+                        child: Text(
+                          (i + 1).toString(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColorDark,
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        item.userName,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      subtitle: Row(
+                        children: [
+                          Icon(
+                            Ionicons.location_outline,
+                            size: 12,
+                            color: Colors.grey.shade600,
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            '${item.userCity}, ${item.userProvince}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: Text(
+                        Helper.compactNumber(item.investAmount),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green.shade600,
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ],
       ),
     );
