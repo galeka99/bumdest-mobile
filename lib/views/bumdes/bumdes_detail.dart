@@ -7,6 +7,7 @@ import 'package:bumdest/models/product.dart';
 import 'package:bumdest/services/api.dart';
 import 'package:bumdest/services/helper.dart';
 import 'package:bumdest/views/bumdes/bumdes_reviews.dart';
+import 'package:bumdest/views/bumdes/latest_product.dart';
 import 'package:bumdest/views/bumdes/product_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -24,7 +25,6 @@ class BumdesDetailPage extends StatefulWidget {
 class _BumdesDetailPageState extends State<BumdesDetailPage> {
   late BumdesModel _bumdes;
   bool _loading = true;
-  List<ProductModel> _bestProducts = [];
   List<ProductModel> _relatedProducts = [];
   List<ProductModel> _latestProducts = [];
   List<BumdesInvestorModel> _investors = [];
@@ -44,24 +44,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
       setState(() {
         _loading = false;
       });
-    }
-  }
-
-  Future<void> _getBestProducts() async {
-    try {
-      dynamic data =
-          await Api.get('/v1/bumdes/${widget.bumdesId}/products?limit=5');
-      setState(() {
-        _bestProducts =
-            (data['data'] as List).map((e) => ProductModel.parse(e)).toList();
-      });
-    } catch (e) {
-      if (e is ApiError) {
-        Helper.toast(context, e.message, isError: true);
-      } else {
-        print(e);
-        Helper.toast(context, 'System error', isError: true);
-      }
     }
   }
 
@@ -154,145 +136,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _bestProductsWidget() {
-    return ListView(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      children: [
-        Text(
-          'Best Products',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey.shade600,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 10),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: _bestProducts.length,
-          separatorBuilder: (_, __) => SizedBox(height: 10),
-          itemBuilder: (_, i) {
-            ProductModel item = _bestProducts[i];
-
-            return InkWell(
-              onTap: () => Nav.push(ProductDetailPage(item.id, item.title)),
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey.shade300,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(.25),
-                      offset: Offset(3, 3),
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.title,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(item.bumdes.name),
-                          SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Ionicons.star,
-                                size: 14,
-                                color: Colors.amber.shade700,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                item.voteAverage.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                '(${item.voteCount})',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade800,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(
-                                Ionicons.location_outline,
-                                size: 12,
-                                color: Colors.grey.shade800,
-                              ),
-                              SizedBox(width: 5),
-                              Text(
-                                item.bumdes.location.cityName,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade800,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            Helper.toRupiah(item.currentInvest),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green.shade600,
-                            ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            Helper.toRupiah(item.investTarget),
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 
@@ -433,7 +276,7 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
         ),
         SizedBox(height: 10),
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () => Nav.push(BumdesLatestProductPage(_bumdes.id)),
           child: Text(
             'View More Products'.toUpperCase(),
           ),
@@ -688,7 +531,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
   @override
   void initState() {
     _getData();
-    _getBestProducts();
     _getRelatedProducts();
     _getLatestProducts();
     _getTopTenInvestors();
@@ -853,8 +695,6 @@ class _BumdesDetailPageState extends State<BumdesDetailPage> {
                 ),
                 SizedBox(height: 10),
                 _topTenInvestorsWidget(),
-                SizedBox(height: 20),
-                _bestProductsWidget(),
                 SizedBox(height: 20),
                 _relatedProductsWidget(),
                 SizedBox(height: 20),
