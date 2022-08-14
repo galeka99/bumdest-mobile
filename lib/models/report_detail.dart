@@ -38,6 +38,7 @@ class ReportDetailModel {
   });
 
   factory ReportDetailModel.parse(dynamic json) {
+    print(json);
     return ReportDetailModel(
       id: json['id'],
       parentId: json['parent']['id'],
@@ -45,9 +46,9 @@ class ReportDetailModel {
       percentage: (json['percentage'] is int) ? (json['percentage'] as int).toDouble() : json['percentage'],
       amount: (json['amount'] is int) ? (json['amount'] as int).toDouble() : json['amount'],
       month: json['parent']['month'],
-      year: int.parse(json['parent']['year']),
+      year: json['parent']['year'],
       profit: json['parent']['profit'],
-      reportFile: json['parent']['report_file'],
+      reportFile: json['parent']['report_url'],
       productId: json['parent']['project']['id'],
       productTitle: json['parent']['project']['title'],
       bumdesId: json['parent']['project']['bumdes']['id'],
