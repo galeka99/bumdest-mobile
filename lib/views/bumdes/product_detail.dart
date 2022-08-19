@@ -109,11 +109,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   Future<void> _getRelatedProducts() async {
     try {
-      dynamic data = await Api.get('/v1/product/random?limit=5');
+      dynamic data = await Api.get('/v1/product/recommendations/${widget.productId}');
 
       setState(() {
         _relatedProducts =
-            (data['data'] as List).map((e) => ProductModel.parse(e)).toList();
+            (data as List).map((e) => ProductModel.parse(e)).toList();
       });
     } catch (e) {
       if (e is ApiError) {
