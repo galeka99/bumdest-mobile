@@ -33,7 +33,7 @@ class ReportHistoryModel {
       percentage: (json['percentage'] is int) ? (json['percentage'] as int).toDouble() : json['percentage'],
       amount: (json['amount'] is int) ? (json['amount'] as int).toDouble() : json['amount'],
       month: json['parent']['month'],
-      year: json['parent']['year'],
+      year: (json['parent']['year'] is String) ? int.parse(json['parent']['year']) : json['parent']['year'],
       productId: json['parent']['project']['id'],
       productTitle: json['parent']['project']['title'],
       createdAt: json['created_at'],
